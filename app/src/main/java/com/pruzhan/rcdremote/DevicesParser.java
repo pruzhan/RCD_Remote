@@ -4,16 +4,15 @@ import org.xmlpull.v1.XmlPullParser;
 
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+
 public class DevicesParser {
 
-    protected ArrayList<Devices> devices;
+    private DevicesList devicesList;
 
-    public DevicesParser() {
-        devices = new ArrayList<>();
-    }
-
-    public ArrayList<Devices> getDevices() {
-        return devices;
+    @Inject
+    public DevicesParser(DevicesList devicesList) {
+        this.devicesList = devicesList;
     }
 
     public boolean parse(XmlPullParser xpp) {
@@ -23,6 +22,11 @@ public class DevicesParser {
         boolean inEntryDevice = false;
         String textValue = "";
 
+        ArrayList<Devices> inputs = devicesList.getInputs();
+        ArrayList<Devices> outs = devicesList.getOuts();
+        inputs.clear();
+        outs.clear();
+
         try {
             int eventType = xpp.getEventType();
             while (eventType != XmlPullParser.END_DOCUMENT) {
@@ -30,14 +34,25 @@ public class DevicesParser {
                 String tagName = xpp.getName();
                 switch (eventType) {
                     case XmlPullParser.START_TAG:
-                        if ("outs".equalsIgnoreCase(tagName)) {
-                            inEntryGroup = true;
-                        }
-                        if (inEntryGroup) {
-                            if ("out".equalsIgnoreCase(tagName)) {
-                                inEntryDevice = true;
-                                currentDevice = new Devices();
-                            }
+                        switch (tagName.toLowerCase()) {
+                            case "outs":
+                                inEntryGroup = true;
+                                break;
+                            case "out":
+                                if (inEntryGroup) {
+                                    inEntryDevice = true;
+                                    currentDevice = new Devices();
+                                    break;
+                                }
+                            case "inputs":
+                                inEntryGroup = true;
+                                break;
+                            case "input":
+                                if (inEntryGroup) {
+                                    inEntryDevice = true;
+                                    currentDevice = new Devices();
+                                    break;
+                                }
                         }
                         break;
                     case XmlPullParser.TEXT:
@@ -46,17 +61,25 @@ public class DevicesParser {
                     case XmlPullParser.END_TAG:
                         if (inEntryGroup) {
                             if (inEntryDevice) {
-                                if ("out".equalsIgnoreCase(tagName)) {
-                                    devices.add(currentDevice);
-                                    inEntryDevice = false;
-                                } else if ("name".equalsIgnoreCase(tagName)) {
-                                    currentDevice.setName(textValue);
-                                } else if ("id".equalsIgnoreCase(tagName)) {
-                                    currentDevice.setId(textValue);
+                                switch (tagName.toLowerCase()) {
+                                    case "out":
+                                        outs.add(currentDevice);
+                                        inEntryDevice = false;
+                                        break;
+                                    case "input":
+                                        inputs.add(currentDevice);
+                                        inEntryDevice = false;
+                                        break;
+                                    case "name":
+                                        currentDevice.setName(textValue);
+                                        break;
+                                    case "id":
+                                        currentDevice.setId(textValue);
+                                        break;
                                 }
                             }
                         }
-                        if ("outs".equalsIgnoreCase(tagName)) inEntryGroup = false;
+                        if ("outs".equalsIgnoreCase(tagName) || "inputs".equalsIgnoreCase(tagName)) inEntryGroup = false;
                         break;
                     default:
                 }
