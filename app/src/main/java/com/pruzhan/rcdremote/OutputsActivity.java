@@ -5,18 +5,14 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class OutputsActivity extends AppCompatActivity {
-
-    private final OutputsActivityComponent component = DaggerOutputsActivityComponent.builder()
-            .outputsActivityModule(new OutputsActivityModule())
-            .mainApplicationComponent(((App) getApplication()).getApplicationComponent())
-            .build();
-
     private OutputsActivityController controller;
+    private MainApplicationComponent applicationComponent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        controller = component.outputsActivityController();
+        applicationComponent = ((App) getApplication()).getApplicationComponent();
+        controller = new OutputsActivityController(applicationComponent.getDevicesList(), this);
         controller.onActivityCreate();
     }
 }

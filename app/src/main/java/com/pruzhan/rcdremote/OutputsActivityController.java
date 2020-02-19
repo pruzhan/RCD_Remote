@@ -1,5 +1,6 @@
 package com.pruzhan.rcdremote;
 
+import android.app.Activity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -8,18 +9,15 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import javax.inject.Inject;
-
 public class OutputsActivityController {
 
     private final DevicesList devicesList;
-    private final OutputsActivity activity;
+    private final Activity activity;
     private Spinner outputsSpinner;
     private TextView selection;
 
-    @Inject
     public OutputsActivityController(DevicesList devicesList,
-                                     OutputsActivity activity) {
+                                     Activity activity) {
         this.devicesList = devicesList;
         this.activity = activity;
     }
