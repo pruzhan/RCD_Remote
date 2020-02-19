@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="outputs_array">
+        <item>Реле замка (1.1_01)</item>
+        <item>ЗвукСч1 (1.1_12)</item>
+        <item>ЗелСветСч1 (1.1_13)</item>
+        <item>ЗвукСч2 (1.1_14)</item>
+        <item>ЗелСветСч2 (1.1_15)</item>
+        <item>КрСветСч1 (1.1_16)</item>
+        <item>КрСветСч2 (1.1_17)</item>
+    </string-array>
+</resources>

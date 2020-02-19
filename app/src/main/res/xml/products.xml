@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<products>
+<product>
+    <name>iPhone 8</name>
+    <price>4567</price>
+</product>
+<product>
+    <name>Galaxy S 9</name>
+    <price>8767</price>
+</product>
+<product>
+    <name>Pixel 2</name>
+    <price>3577</price>
+</product>
+</products>
