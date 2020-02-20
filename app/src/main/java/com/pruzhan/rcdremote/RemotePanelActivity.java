@@ -55,6 +55,12 @@ public class RemotePanelActivity extends AppCompatActivity {
             for (Devices prod : devicesList.getInputs()) {
                 Log.d("XML", prod.toString());
             }
+            for (Devices prod : devicesList.getReaders()) {
+                Log.d("XML", prod.toString());
+            }
+            for (Devices prod : devicesList.getDoors()) {
+                Log.d("XML", prod.toString());
+            }
         }
     }
 

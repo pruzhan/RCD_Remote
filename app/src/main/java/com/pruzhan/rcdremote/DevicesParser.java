@@ -24,8 +24,13 @@ public class DevicesParser {
 
         ArrayList<Devices> inputs = devicesList.getInputs();
         ArrayList<Devices> outs = devicesList.getOuts();
+        ArrayList<Devices> readers = devicesList.getReaders();
+        ArrayList<Devices> doors = devicesList.getDoors();
+
         inputs.clear();
         outs.clear();
+        doors.clear();
+        readers.clear();
 
         try {
             int eventType = xpp.getEventType();
@@ -36,18 +41,15 @@ public class DevicesParser {
                     case XmlPullParser.START_TAG:
                         switch (tagName.toLowerCase()) {
                             case "outs":
+                            case "inputs":
+                            case "readers":
+                            case "doors":
                                 inEntryGroup = true;
                                 break;
                             case "out":
-                                if (inEntryGroup) {
-                                    inEntryDevice = true;
-                                    currentDevice = new Devices();
-                                    break;
-                                }
-                            case "inputs":
-                                inEntryGroup = true;
-                                break;
                             case "input":
+                            case "reader":
+                            case "door":
                                 if (inEntryGroup) {
                                     inEntryDevice = true;
                                     currentDevice = new Devices();
@@ -70,6 +72,14 @@ public class DevicesParser {
                                         inputs.add(currentDevice);
                                         inEntryDevice = false;
                                         break;
+                                    case "reader":
+                                        readers.add(currentDevice);
+                                        inEntryDevice = false;
+                                        break;
+                                    case "door":
+                                        doors.add(currentDevice);
+                                        inEntryDevice = false;
+                                        break;
                                     case "name":
                                         currentDevice.setName(textValue);
                                         break;
@@ -79,7 +89,9 @@ public class DevicesParser {
                                 }
                             }
                         }
-                        if ("outs".equalsIgnoreCase(tagName) || "inputs".equalsIgnoreCase(tagName)) inEntryGroup = false;
+                        if ("outs".equalsIgnoreCase(tagName) || "inputs".equalsIgnoreCase(tagName)
+                                || "doors".equalsIgnoreCase(tagName) || "readers".equalsIgnoreCase(tagName))
+                            inEntryGroup = false;
                         break;
                     default:
                 }

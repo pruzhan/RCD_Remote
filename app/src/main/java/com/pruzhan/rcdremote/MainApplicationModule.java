@@ -14,6 +14,7 @@ public class MainApplicationModule {
     @Singleton
     @Provides
     DevicesList devicesList() {
-        return new DevicesList(new ArrayList<Devices>(), new ArrayList<Devices>());
+        return new DevicesList(new ArrayList<Devices>(), new ArrayList<Devices>(),
+                new ArrayList<Devices>(), new ArrayList<Devices>());
     }
 }
